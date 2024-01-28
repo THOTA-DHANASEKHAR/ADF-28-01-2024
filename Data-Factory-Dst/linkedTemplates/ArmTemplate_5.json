@@ -1,0 +1,751 @@
+{
+	"$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"type": "string",
+			"metadata": "Data Factory name",
+			"defaultValue": "Data-Factory-Dst"
+		},
+		"Schedule_Trigger_properties_Schedule_Triggers_parameters_scheduledTime": {
+			"type": "string",
+			"defaultValue": "@trigger().scheduledTime"
+		},
+		"Storage_event_trigger_properties_Storage_Event_Triggers_parameters_fileName": {
+			"type": "string",
+			"defaultValue": "@triggerBody().fileName"
+		},
+		"Storage_event_trigger_properties_Storage_Event_Triggers_parameters_filepath": {
+			"type": "string",
+			"defaultValue": "@triggerBody().folderPath"
+		},
+		"Storage_event_trigger_properties_typeProperties_scope": {
+			"type": "string",
+			"defaultValue": "/subscriptions/01d7060d-7683-4d0b-9047-e1989e1c5f15/resourceGroups/tds/providers/Microsoft.Storage/storageAccounts/gunasai"
+		}
+	},
+	"variables": {
+		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
+	},
+	"resources": [
+		{
+			"name": "[concat(parameters('factoryName'), '/stored procedure')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"description": "select * from [dbo].[ETLLogTBL]",
+				"activities": [
+					{
+						"name": "Copy data1",
+						"type": "Copy",
+						"dependsOn": [
+							{
+								"activity": "Set variable1",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "DelimitedTextSource",
+								"storeSettings": {
+									"type": "AzureBlobFSReadSettings",
+									"recursive": true,
+									"enablePartitionDiscovery": false
+								},
+								"formatSettings": {
+									"type": "DelimitedTextReadSettings"
+								}
+							},
+							"sink": {
+								"type": "JsonSink",
+								"storeSettings": {
+									"type": "AzureBlobFSWriteSettings"
+								},
+								"formatSettings": {
+									"type": "JsonWriteSettings"
+								}
+							},
+							"enableStaging": false
+						},
+						"inputs": [
+							{
+								"referenceName": "source_stored_procedure",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "target_stored_procedure",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					},
+					{
+						"name": "Set variable1",
+						"type": "SetVariable",
+						"dependsOn": [],
+						"policy": {
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "starttime",
+							"value": {
+								"value": "@utcnow()",
+								"type": "Expression"
+							}
+						}
+					},
+					{
+						"name": "Stored procedure1_copy1",
+						"description": "Create table dbo.ETLLogTBL(\nDataFactoryName varchar(32),\nPipelineRunID varchar(32),\nPipeline_Name varchar(32),\nSourceType  varchar(32),\nObjectName varchar(32),\nTargetType varchar(32),\nTargetName varchar(32),\nTargetPath varchar(max),\nRowsRead varchar(10),\nRowsCopied varchar(10),\nCopyDuration varchar(32),\nThroughPut varchar(32),\nIRName varchar(64),\nPlStartTime datetime,\nPlEndTime datetime,\nStatus  varchar(10),\nError_Details  varchar(max));\n\n\nCREATE PROCEDURE dbo.SP_ETLLogTBL(\n@DataFactoryName varchar(32),\n@PipelineRunID varchar(32),\n@Pipeline_Name varchar(32),\n@SourceType  varchar(32),\n@ObjectName varchar(32),\n@TargetType varchar(32),\n@TargetName varchar(32),\n@TargetPath varchar(max),\n@RowsRead varchar(10),\n@RowsCopied varchar(10),\n@CopyDuration varchar(32),\n@ThroughPut varchar(32),\n@IRName varchar(64),\n@PlStartTime datetime,\n@PlEndTime datetime,\n@Status  varchar(10),\n@Error_Details  varchar(max))\nas\nbegin\nINSERT INTO dbo.ETLLogTBL(DataFactoryName,\nPipelineRunID,\nPipeline_Name,\nSourceType ,\nObjectName,\nTargetType,\nTargetName,\nTargetPath,\nRowsRead ,\nRowsCopied ,\nCopyDuration,\nThroughPut,\nIRName ,\nPlStartTime ,\nPlEndTime ,\nStatus  ,\nError_Details )  SELECT @DataFactoryName,\n@PipelineRunID,\n@Pipeline_Name,\n@SourceType ,\n@ObjectName,\n@TargetType,\n@TargetName,\n@TargetPath,\n@RowsRead ,\n@RowsCopied ,\n@CopyDuration,\n@ThroughPut,\n@IRName ,\n@PlStartTime ,\n@PlEndTime ,\n@Status  ,\n@Error_Details \nend",
+						"type": "SqlServerStoredProcedure",
+						"dependsOn": [
+							{
+								"activity": "If Condition1",
+								"dependencyConditions": [
+									"Completed"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"storedProcedureName": "[[dbo].[SP_ETLLogTBL]",
+							"storedProcedureParameters": {
+								"CopyDuration": {
+									"value": {
+										"value": "@activity('Copy data1').output.copyDuration",
+										"type": "Expression"
+									},
+									"type": "String"
+								},
+								"DataFactoryName": {
+									"value": {
+										"value": "@pipeline().DataFactory",
+										"type": "Expression"
+									},
+									"type": "String"
+								},
+								"Error_Details": {
+									"value": {
+										"value": "@variables('Error_Message')",
+										"type": "Expression"
+									},
+									"type": "String"
+								},
+								"IRName": {
+									"value": {
+										"value": "@activity('Copy data1').output.effectiveIntegrationRuntime",
+										"type": "Expression"
+									},
+									"type": "String"
+								},
+								"ObjectName": {
+									"value": "ABC",
+									"type": "String"
+								},
+								"Pipeline_Name": {
+									"value": {
+										"value": "@pipeline().Pipeline",
+										"type": "Expression"
+									},
+									"type": "String"
+								},
+								"PipelineRunID": {
+									"value": {
+										"value": "@pipeline().RunId",
+										"type": "Expression"
+									},
+									"type": "String"
+								},
+								"PlEndTime": {
+									"value": {
+										"value": "@utcnow()",
+										"type": "Expression"
+									},
+									"type": "DateTime"
+								},
+								"PlStartTime": {
+									"value": {
+										"value": "@variables('starttime')",
+										"type": "Expression"
+									},
+									"type": "DateTime"
+								},
+								"RowsCopied": {
+									"value": {
+										"value": "@activity('Copy data1').output.rowsCopied",
+										"type": "Expression"
+									},
+									"type": "String"
+								},
+								"RowsRead": {
+									"value": {
+										"value": "@activity('Copy data1').output.rowsRead",
+										"type": "Expression"
+									},
+									"type": "String"
+								},
+								"SourceType": {
+									"value": "ADLS_SOURCE",
+									"type": "String"
+								},
+								"Status": {
+									"value": "Fail",
+									"type": "String"
+								},
+								"TargetName": {
+									"value": "Target",
+									"type": "String"
+								},
+								"TargetPath": {
+									"value": "sink",
+									"type": "String"
+								},
+								"TargetType": {
+									"value": "storage",
+									"type": "String"
+								},
+								"ThroughPut": {
+									"value": {
+										"value": "@activity('Copy data1').output.throughput",
+										"type": "Expression"
+									},
+									"type": "String"
+								}
+							}
+						},
+						"linkedServiceName": {
+							"referenceName": "LSAsqlDB",
+							"type": "LinkedServiceReference"
+						}
+					},
+					{
+						"name": "If Condition1",
+						"type": "IfCondition",
+						"dependsOn": [
+							{
+								"activity": "Copy data1",
+								"dependencyConditions": [
+									"Completed"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"expression": {
+								"value": "@equals(activity('Copy data1').status,'Failed')",
+								"type": "Expression"
+							},
+							"ifTrueActivities": [
+								{
+									"name": "Set variable2",
+									"type": "SetVariable",
+									"dependsOn": [],
+									"policy": {
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"variableName": "Error_Message",
+										"value": {
+											"value": "@activity('Copy data1').output.errors[0].Message\n",
+											"type": "Expression"
+										}
+									}
+								}
+							]
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"variables": {
+					"starttime": {
+						"type": "String"
+					},
+					"Error_Message": {
+						"type": "String",
+						"defaultValue": "All good"
+					}
+				},
+				"folder": {
+					"name": "stored procedure"
+				},
+				"annotations": [],
+				"lastPublishTime": "2024-01-27T15:41:25Z"
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/upsert_1')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"folder": {
+					"name": "UPSERT"
+				},
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "source_scd_t1",
+								"type": "DatasetReference"
+							},
+							"name": "source1"
+						}
+					],
+					"sinks": [
+						{
+							"dataset": {
+								"referenceName": "target_scd_t1",
+								"type": "DatasetReference"
+							},
+							"name": "sink1"
+						}
+					],
+					"transformations": [
+						{
+							"name": "alterRow1"
+						}
+					],
+					"scriptLines": [
+						"source(output(",
+						"          ID as integer,",
+						"          Ename as string,",
+						"          SAL as integer",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     isolationLevel: 'READ_UNCOMMITTED',",
+						"     format: 'table') ~> source1",
+						"source1 alterRow(upsertIf(1==1)) ~> alterRow1",
+						"alterRow1 sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     deletable:false,",
+						"     insertable:false,",
+						"     updateable:false,",
+						"     upsertable:true,",
+						"     keys:['ID'],",
+						"     format: 'table',",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true,",
+						"     errorHandlingOption: 'stopOnFirstError') ~> sink1"
+					]
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/MasterPPL')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "IFC_Recovery_master_slave_001",
+						"type": "IfCondition",
+						"dependsOn": [
+							{
+								"activity": "LKP_Recovery_master_slave_001",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"expression": {
+								"value": "@equals(activity('LKP_Recovery_master_slave_001').output.value[0].CNT,1 )\n\n",
+								"type": "Expression"
+							},
+							"ifTrueActivities": [
+								{
+									"name": "EPPL001",
+									"type": "ExecutePipeline",
+									"dependsOn": [],
+									"policy": {
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"pipeline": {
+											"referenceName": "ChildPPL001",
+											"type": "PipelineReference"
+										},
+										"waitOnCompletion": true,
+										"parameters": {}
+									}
+								}
+							]
+						}
+					},
+					{
+						"name": "LKP_Recovery_master_slave_001",
+						"type": "Lookup",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "AzureSqlSource",
+								"sqlReaderQuery": "SELECT COUNT(*) AS CNT FROM dbo.Master_child_control_tbl WHERE Master_PPL_Name = 'MasterPPL001' AND Child_PPL_Name = 'ChildPPL001' AND Recovery=1;",
+								"queryTimeout": "02:00:00",
+								"partitionOption": "None"
+							},
+							"dataset": {
+								"referenceName": "source_tabel_ppl_recovery",
+								"type": "DatasetReference",
+								"parameters": {}
+							},
+							"firstRowOnly": false
+						}
+					},
+					{
+						"name": "LKP_Recovery_master_slave_002",
+						"type": "Lookup",
+						"dependsOn": [
+							{
+								"activity": "IFC_Recovery_master_slave_001",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "AzureSqlSource",
+								"sqlReaderQuery": "UPDATE dbo.Master_child_control_tbl SET Recovery=0 WHERE Master_PPL_Name = 'MasterPPL001' AND Child_PPL_Name = 'ChildPPL001';\r\nSELECT COUNT(*) AS CNT FROM dbo.Master_child_control_tbl WHERE Master_PPL_Name = 'MasterPPL001' AND Child_PPL_Name = 'ChildPPL002' AND Recovery=1;",
+								"queryTimeout": "02:00:00",
+								"partitionOption": "None"
+							},
+							"dataset": {
+								"referenceName": "source_tabel_ppl_recovery",
+								"type": "DatasetReference",
+								"parameters": {}
+							},
+							"firstRowOnly": false
+						}
+					},
+					{
+						"name": "LKP_Recovery_master_slave_003",
+						"type": "Lookup",
+						"dependsOn": [
+							{
+								"activity": "IFC_Recovery_master_slave_002",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "AzureSqlSource",
+								"sqlReaderQuery": "UPDATE dbo.Master_child_control_tbl SET Recovery=0 WHERE Master_PPL_Name = 'MasterPPL001' AND Child_PPL_Name = 'ChildPPL002';\r\nSELECT COUNT(*) AS CNT FROM dbo.Master_child_control_tbl WHERE Master_PPL_Name = 'MasterPPL001' AND Child_PPL_Name = 'ChildPPL003' AND Recovery=1;",
+								"queryTimeout": "02:00:00",
+								"partitionOption": "None"
+							},
+							"dataset": {
+								"referenceName": "source_tabel_ppl_recovery",
+								"type": "DatasetReference",
+								"parameters": {}
+							},
+							"firstRowOnly": false
+						}
+					},
+					{
+						"name": "IFC_Recovery_master_slave_002",
+						"type": "IfCondition",
+						"dependsOn": [
+							{
+								"activity": "LKP_Recovery_master_slave_002",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"expression": {
+								"value": "@equals(activity('LKP_Recovery_master_slave_002').output.value[0].CNT,1 )",
+								"type": "Expression"
+							},
+							"ifTrueActivities": [
+								{
+									"name": "EPPL002",
+									"type": "ExecutePipeline",
+									"dependsOn": [],
+									"policy": {
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"pipeline": {
+											"referenceName": "ChildPPL002",
+											"type": "PipelineReference"
+										},
+										"waitOnCompletion": true,
+										"parameters": {}
+									}
+								}
+							]
+						}
+					},
+					{
+						"name": "IFC_Recovery_master_slave_003",
+						"type": "IfCondition",
+						"dependsOn": [
+							{
+								"activity": "LKP_Recovery_master_slave_003",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"expression": {
+								"value": "@equals(activity('LKP_Recovery_master_slave_003').output.value[0].CNT,1 )",
+								"type": "Expression"
+							},
+							"ifTrueActivities": [
+								{
+									"name": "EPPL003",
+									"type": "ExecutePipeline",
+									"dependsOn": [],
+									"policy": {
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"pipeline": {
+											"referenceName": "ChildPPL003",
+											"type": "PipelineReference"
+										},
+										"waitOnCompletion": true,
+										"parameters": {}
+									}
+								}
+							]
+						}
+					},
+					{
+						"name": "LKP_Recovery_master_slave_004_Success",
+						"type": "Lookup",
+						"dependsOn": [
+							{
+								"activity": "IFC_Recovery_master_slave_003",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "AzureSqlSource",
+								"sqlReaderQuery": "UPDATE dbo.Master_child_control_tbl SET Recovery=1 WHERE Master_PPL_Name = 'MasterPPL001';\r\nSELECT 'SUCCESS' AS STATUS",
+								"queryTimeout": "02:00:00",
+								"partitionOption": "None"
+							},
+							"dataset": {
+								"referenceName": "source_tabel_ppl_recovery",
+								"type": "DatasetReference",
+								"parameters": {}
+							},
+							"firstRowOnly": false
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"variables": {
+					"test": {
+						"type": "String"
+					}
+				},
+				"folder": {
+					"name": "PPL_RECOVERY"
+				},
+				"annotations": [],
+				"lastPublishTime": "2024-01-24T04:33:58Z"
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/SCD_1')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Data flow1",
+						"type": "ExecuteDataFlow",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"dataflow": {
+								"referenceName": "upsert_1",
+								"type": "DataFlowReference",
+								"parameters": {},
+								"datasetParameters": {
+									"source1": {},
+									"sink1": {}
+								}
+							},
+							"staging": {},
+							"compute": {
+								"coreCount": 8,
+								"computeType": "General"
+							},
+							"traceLevel": "Fine"
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"folder": {
+					"name": "UPSERT-MERGE"
+				},
+				"annotations": [],
+				"lastPublishTime": "2024-01-27T17:01:39Z"
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/dataflows/upsert_1')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Schedule_Trigger')]",
+			"type": "Microsoft.DataFactory/factories/triggers",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"runtimeState": "Started",
+				"pipelines": [
+					{
+						"pipelineReference": {
+							"referenceName": "Schedule_Triggers",
+							"type": "PipelineReference"
+						},
+						"parameters": {
+							"scheduledTime": "[parameters('Schedule_Trigger_properties_Schedule_Triggers_parameters_scheduledTime')]"
+						}
+					}
+				],
+				"type": "ScheduleTrigger",
+				"typeProperties": {
+					"recurrence": {
+						"frequency": "Month",
+						"interval": 1,
+						"startTime": "2024-01-27T02:07:00",
+						"timeZone": "India Standard Time",
+						"schedule": {
+							"minutes": [
+								56
+							],
+							"hours": [
+								15
+							],
+							"monthDays": [
+								27
+							]
+						}
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Storage_event_trigger')]",
+			"type": "Microsoft.DataFactory/factories/triggers",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"runtimeState": "Started",
+				"pipelines": [
+					{
+						"pipelineReference": {
+							"referenceName": "Storage_Event_Triggers",
+							"type": "PipelineReference"
+						},
+						"parameters": {
+							"fileName": "[parameters('Storage_event_trigger_properties_Storage_Event_Triggers_parameters_fileName')]",
+							"filepath": "[parameters('Storage_event_trigger_properties_Storage_Event_Triggers_parameters_filepath')]"
+						}
+					}
+				],
+				"type": "BlobEventsTrigger",
+				"typeProperties": {
+					"blobPathBeginsWith": "/source/blobs/",
+					"ignoreEmptyBlobs": true,
+					"scope": "[parameters('Storage_event_trigger_properties_typeProperties_scope')]",
+					"events": [
+						"Microsoft.Storage.BlobCreated"
+					]
+				}
+			},
+			"dependsOn": []
+		}
+	]
+}
