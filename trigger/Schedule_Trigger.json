@@ -1,0 +1,38 @@
+{
+	"name": "Schedule_Trigger",
+	"properties": {
+		"annotations": [],
+		"runtimeState": "Started",
+		"pipelines": [
+			{
+				"pipelineReference": {
+					"referenceName": "Schedule_Triggers",
+					"type": "PipelineReference"
+				},
+				"parameters": {
+					"scheduledTime": "@trigger().scheduledTime"
+				}
+			}
+		],
+		"type": "ScheduleTrigger",
+		"typeProperties": {
+			"recurrence": {
+				"frequency": "Month",
+				"interval": 1,
+				"startTime": "2024-01-27T02:07:00",
+				"timeZone": "India Standard Time",
+				"schedule": {
+					"minutes": [
+						56
+					],
+					"hours": [
+						15
+					],
+					"monthDays": [
+						27
+					]
+				}
+			}
+		}
+	}
+}

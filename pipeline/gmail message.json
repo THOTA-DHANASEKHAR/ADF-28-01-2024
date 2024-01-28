@@ -1,0 +1,97 @@
+{
+	"name": "gmail message",
+	"properties": {
+		"activities": [
+			{
+				"name": "Copy data1",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "DelimitedTextSource",
+						"storeSettings": {
+							"type": "AzureBlobFSReadSettings",
+							"recursive": true,
+							"enablePartitionDiscovery": false
+						},
+						"formatSettings": {
+							"type": "DelimitedTextReadSettings"
+						}
+					},
+					"sink": {
+						"type": "JsonSink",
+						"storeSettings": {
+							"type": "AzureBlobFSWriteSettings"
+						},
+						"formatSettings": {
+							"type": "JsonWriteSettings"
+						}
+					},
+					"enableStaging": false
+				},
+				"inputs": [
+					{
+						"referenceName": "Source_gmail_message",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "Target_gmail_message",
+						"type": "DatasetReference"
+					}
+				]
+			},
+			{
+				"name": "Web1",
+				"type": "WebActivity",
+				"dependsOn": [
+					{
+						"activity": "Copy data1",
+						"dependencyConditions": [
+							"Completed"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"method": "POST",
+					"headers": {
+						"content-type": "application/json"
+					},
+					"url": "https://prod-27.eastus.logic.azure.com:443/workflows/e4e0d2f93a4b4bdf90f03be2f31f0595/triggers/manual/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=HImc52ky-i2nqKGaC1CE_XpC9wxIW71303LCgXuOFHQ",
+					"body": {
+						"value": "{\n    \"TO\": \"sekhardhana756@gmail.com\",\n    \"SUBJECT\": \"@{concat('Azure Data Factory Pipeline ', activity('Copy data1').status)}\",\n    \"EMAIL_BODY\":\"@{\n        activity('Copy data1').output.errors[0].Message\n        }\"\n}\n\n\n\n\n\n\n",
+						"type": "Expression"
+					}
+				}
+			}
+		],
+		"variables": {
+			"a": {
+				"type": "String"
+			}
+		},
+		"folder": {
+			"name": "Text_mail"
+		},
+		"annotations": [],
+		"lastPublishTime": "2024-01-27T15:49:53Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

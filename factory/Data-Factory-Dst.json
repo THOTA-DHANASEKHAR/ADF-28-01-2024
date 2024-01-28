@@ -1,0 +1,9 @@
+{
+	"name": "Data-Factory-Dst",
+	"location": "eastus",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "f337fe47-a6c5-496a-8093-64045e9e8482",
+		"tenantId": "d4cacafc-8802-4dd7-959b-637c46e2178f"
+	}
+}

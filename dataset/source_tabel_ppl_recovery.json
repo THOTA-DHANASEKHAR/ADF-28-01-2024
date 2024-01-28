@@ -1,0 +1,20 @@
+{
+	"name": "source_tabel_ppl_recovery",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "LSAsqlDB",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "PPL_recovery"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "Master_child_control_tbl"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

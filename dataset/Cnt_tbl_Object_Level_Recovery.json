@@ -1,0 +1,34 @@
+{
+	"name": "Cnt_tbl_Object_Level_Recovery",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "LSAsqlDB",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "Object_Level_Recovery"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "SourceType",
+				"type": "varchar"
+			},
+			{
+				"name": "SourceObjectName",
+				"type": "varchar"
+			},
+			{
+				"name": "ActiveStatus",
+				"type": "int",
+				"precision": 10
+			}
+		],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "Control_Tbl_Info"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

@@ -1,0 +1,98 @@
+{
+	"name": "outlook_file_Attachment",
+	"properties": {
+		"activities": [
+			{
+				"name": "Copy data1",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "DelimitedTextSource",
+						"storeSettings": {
+							"type": "AzureBlobFSReadSettings",
+							"recursive": true,
+							"enablePartitionDiscovery": false
+						},
+						"formatSettings": {
+							"type": "DelimitedTextReadSettings"
+						}
+					},
+					"sink": {
+						"type": "JsonSink",
+						"storeSettings": {
+							"type": "AzureBlobFSWriteSettings"
+						},
+						"formatSettings": {
+							"type": "JsonWriteSettings"
+						}
+					},
+					"enableStaging": false
+				},
+				"inputs": [
+					{
+						"referenceName": "source_outlook_file_Attachment",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "Target_outlook_file_Attachment",
+						"type": "DatasetReference"
+					}
+				]
+			},
+			{
+				"name": "Web1",
+				"type": "WebActivity",
+				"dependsOn": [
+					{
+						"activity": "Copy data1",
+						"dependencyConditions": [
+							"Failed"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"method": "POST",
+					"headers": {
+						"content-type": "application/json"
+					},
+					"url": "https://prod-36.eastus.logic.azure.com:443/workflows/f7891825ae3f475a966381f34d762c12/triggers/manual/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=XTHXReMPqSpztR_kqFz_2xQmE_I5hTjH1zcpCsl3lIc",
+					"body": {
+						"value": "{\n    \"To\": \"keerthivuggumudi2424@gmail.com\",\n    \"subject\": \"Azure Data Factory Pipeline failed\",\n    \"file_name\":\"@{variables('File_Name')}\"\n}\n\n\n\n\n",
+						"type": "Expression"
+					}
+				}
+			}
+		],
+		"variables": {
+			"File_Name": {
+				"type": "String",
+				"defaultValue": "source/Trigger- System variables - Azure Data Factory.pdf"
+			}
+		},
+		"folder": {
+			"name": "mail_with_attachment"
+		},
+		"annotations": [],
+		"lastPublishTime": "2024-01-27T15:47:39Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}
