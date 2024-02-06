@@ -1,0 +1,24 @@
+{
+	"name": "source_ds_unzip_files",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureDataLakeStorage1",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "Unzip_Files"
+		},
+		"annotations": [],
+		"type": "Binary",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileName": "zipfiles.zip",
+				"fileSystem": "source"
+			},
+			"compression": {
+				"type": "ZipDeflate"
+			}
+		}
+	}
+}
