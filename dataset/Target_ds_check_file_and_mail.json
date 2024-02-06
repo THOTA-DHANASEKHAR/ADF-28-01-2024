@@ -1,0 +1,22 @@
+{
+	"name": "Target_ds_check_file_and_mail",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureDataLakeStorage1",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "check_file_and_mail"
+		},
+		"annotations": [],
+		"type": "Json",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"folderPath": "stored_procedure",
+				"fileSystem": "sink"
+			}
+		},
+		"schema": {}
+	}
+}
