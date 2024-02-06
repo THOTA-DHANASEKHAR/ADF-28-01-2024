@@ -1,0 +1,9 @@
+{
+	"name": "dataengineer-Data-factories",
+	"location": "eastus",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "59f05364-c553-4054-b42e-096193d8c4f6",
+		"tenantId": "d4cacafc-8802-4dd7-959b-637c46e2178f"
+	}
+}
