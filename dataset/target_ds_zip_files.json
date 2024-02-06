@@ -1,0 +1,24 @@
+{
+	"name": "target_ds_zip_files",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureDataLakeStorage1",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "zip_files"
+		},
+		"annotations": [],
+		"type": "Binary",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"folderPath": "zip_files",
+				"fileSystem": "sink"
+			},
+			"compression": {
+				"type": "ZipDeflate"
+			}
+		}
+	}
+}
