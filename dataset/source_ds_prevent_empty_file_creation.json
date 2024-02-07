@@ -1,0 +1,19 @@
+{
+	"name": "source_ds_prevent_empty_file_creation",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureSqlDatabase1",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "prevent_empty_file_creation"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [],
+		"typeProperties": {
+			"schema": "test",
+			"table": "Employee"
+		}
+	}
+}

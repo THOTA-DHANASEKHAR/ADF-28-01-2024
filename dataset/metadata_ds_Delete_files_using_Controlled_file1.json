@@ -1,0 +1,35 @@
+{
+	"name": "metadata_ds_Delete_files_using_Controlled_file1",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureDataLakeStorage1",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "Delete_files_using_Controlled_file"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileName": "control_file.csv",
+				"fileSystem": "source"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": [
+			{
+				"name": "filename",
+				"type": "String"
+			},
+			{
+				"name": "filepath",
+				"type": "String"
+			}
+		]
+	}
+}
