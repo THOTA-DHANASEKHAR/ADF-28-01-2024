@@ -1,9 +1,12 @@
 {
-	"name": "AzureSqlTable1",
+	"name": "upsert_merge",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "LSAsqlDB",
 			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "upsert_merge"
 		},
 		"annotations": [],
 		"type": "AzureSqlTable",

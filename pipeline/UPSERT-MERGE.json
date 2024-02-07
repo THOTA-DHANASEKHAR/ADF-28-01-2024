@@ -26,7 +26,7 @@
 						"partitionOption": "None"
 					},
 					"dataset": {
-						"referenceName": "AzureSqlTable1",
+						"referenceName": "upsert_merge",
 						"type": "DatasetReference"
 					},
 					"firstRowOnly": false
