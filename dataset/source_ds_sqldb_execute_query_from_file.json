@@ -1,0 +1,19 @@
+{
+	"name": "source_ds_sqldb_execute_query_from_file",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureSqlDatabase1",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "execute_query_from_file"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [],
+		"typeProperties": {
+			"schema": "test",
+			"table": "Employee"
+		}
+	}
+}

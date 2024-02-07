@@ -1,0 +1,61 @@
+{
+	"name": "list_of_tables",
+	"properties": {
+		"description": "\n\n\n\n\n\n",
+		"activities": [
+			{
+				"name": "Lookup1",
+				"type": "Lookup",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "AzureSqlSource",
+						"sqlReaderQuery": "SELECT TABLE_NAME\nFROM INFORMATION_SCHEMA.TABLES\nWHERE TABLE_TYPE = 'BASE TABLE';",
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"dataset": {
+						"referenceName": "source_ds_list_of_tables",
+						"type": "DatasetReference"
+					},
+					"firstRowOnly": false
+				}
+			}
+		],
+		"variables": {
+			"database": {
+				"type": "String",
+				"defaultValue": "SELECT name FROM sys.databases WHERE database_id > 4;"
+			},
+			"database epplanation": {
+				"type": "String",
+				"defaultValue": "This query retrieves the names of all databases from the sys.databases system view where database_id is greater than 4, which excludes system databases like master, tempdb, model, and msdb."
+			},
+			"views": {
+				"type": "String",
+				"defaultValue": "SELECT name FROM sys.views;"
+			},
+			"procedures": {
+				"type": "String",
+				"defaultValue": "SELECT name FROM sys.procedures;"
+			},
+			"table": {
+				"type": "String",
+				"defaultValue": "SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_TYPE = 'BASE TABLE';"
+			}
+		},
+		"folder": {
+			"name": "list_of_tables"
+		},
+		"annotations": [],
+		"lastPublishTime": "2024-02-07T11:50:27Z"
+	}
+}
