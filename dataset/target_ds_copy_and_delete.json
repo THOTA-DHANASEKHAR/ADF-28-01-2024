@@ -1,0 +1,21 @@
+{
+	"name": "target_ds_copy_and_delete",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureDataLakeStorage1",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "copy_and_delete"
+		},
+		"annotations": [],
+		"type": "Binary",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"folderPath": "copy_and_delete",
+				"fileSystem": "sink"
+			}
+		}
+	}
+}

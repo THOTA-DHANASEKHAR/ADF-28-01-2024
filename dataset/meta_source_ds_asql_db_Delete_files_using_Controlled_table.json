@@ -1,0 +1,19 @@
+{
+	"name": "meta_source_ds_asql_db_Delete_files_using_Controlled_table",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureSqlDatabase1",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "Delete_files_using_Controlled_table"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "controltbltds"
+		}
+	}
+}
