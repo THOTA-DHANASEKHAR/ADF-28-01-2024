@@ -1,0 +1,9 @@
+{
+	"name": "DSRPvtLtd",
+	"location": "eastus",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "931f9a3e-e77b-4bec-b562-43392a7aa7f7",
+		"tenantId": "2dc67ee3-3164-4bdc-b34d-979a4950672b"
+	}
+}
