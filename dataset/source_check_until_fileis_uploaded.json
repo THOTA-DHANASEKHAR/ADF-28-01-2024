@@ -1,5 +1,5 @@
 {
-	"name": "target",
+	"name": "source_check_until_fileis_uploaded",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "AzureDataLakeStorage1",
@@ -10,7 +10,7 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobFSLocation",
-				"folderPath": "restapt",
+				"fileName": "emp.csv",
 				"fileSystem": "landing"
 			},
 			"columnDelimiter": ",",
