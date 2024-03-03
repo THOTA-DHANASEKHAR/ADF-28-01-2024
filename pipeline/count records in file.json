@@ -1,0 +1,262 @@
+{
+	"name": "count records in file",
+	"properties": {
+		"activities": [
+			{
+				"name": "Until1",
+				"type": "Until",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"expression": {
+						"value": "@variables('i')",
+						"type": "Expression"
+					},
+					"activities": [
+						{
+							"name": "Lookup1",
+							"type": "Lookup",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "DelimitedTextSource",
+									"storeSettings": {
+										"type": "AzureBlobFSReadSettings",
+										"recursive": true,
+										"enablePartitionDiscovery": false
+									},
+									"formatSettings": {
+										"type": "DelimitedTextReadSettings",
+										"skipLineCount": {
+											"value": "@variables('totalcount')",
+											"type": "Expression"
+										}
+									}
+								},
+								"dataset": {
+									"referenceName": "count_recods",
+									"type": "DatasetReference"
+								},
+								"firstRowOnly": false
+							}
+						},
+						{
+							"name": "temp",
+							"type": "SetVariable",
+							"dependsOn": [
+								{
+									"activity": "count",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "temp",
+								"value": {
+									"value": "@add(variables('count'),variables('totalcount'))",
+									"type": "Expression"
+								}
+							}
+						},
+						{
+							"name": "If Condition1",
+							"type": "IfCondition",
+							"dependsOn": [
+								{
+									"activity": "temp",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"userProperties": [],
+							"typeProperties": {
+								"expression": {
+									"value": "@less(variables('count'),5000)",
+									"type": "Expression"
+								},
+								"ifFalseActivities": [
+									{
+										"name": "totalcount1",
+										"type": "SetVariable",
+										"dependsOn": [],
+										"policy": {
+											"secureOutput": false,
+											"secureInput": false
+										},
+										"userProperties": [],
+										"typeProperties": {
+											"variableName": "totalcount",
+											"value": {
+												"value": "@variables('temp')",
+												"type": "Expression"
+											}
+										}
+									}
+								],
+								"ifTrueActivities": [
+									{
+										"name": "stop",
+										"type": "SetVariable",
+										"dependsOn": [
+											{
+												"activity": "totalcount",
+												"dependencyConditions": [
+													"Succeeded"
+												]
+											}
+										],
+										"policy": {
+											"secureOutput": false,
+											"secureInput": false
+										},
+										"userProperties": [],
+										"typeProperties": {
+											"variableName": "i",
+											"value": true
+										}
+									},
+									{
+										"name": "totalcount",
+										"type": "SetVariable",
+										"dependsOn": [],
+										"policy": {
+											"secureOutput": false,
+											"secureInput": false
+										},
+										"userProperties": [],
+										"typeProperties": {
+											"variableName": "totalcount",
+											"value": {
+												"value": "@variables('temp')",
+												"type": "Expression"
+											}
+										}
+									}
+								]
+							}
+						},
+						{
+							"name": "count",
+							"type": "SetVariable",
+							"dependsOn": [
+								{
+									"activity": "Lookup1",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "count",
+								"value": {
+									"value": "@activity('Lookup1').output.count",
+									"type": "Expression"
+								}
+							}
+						}
+					],
+					"timeout": "0.12:00:00"
+				}
+			},
+			{
+				"name": "final count",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "Until1",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "final count",
+					"value": {
+						"value": "@variables('totalcount')",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "last count value",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "final count",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "lastcountvalue",
+					"value": {
+						"value": "@variables('count')",
+						"type": "Expression"
+					}
+				}
+			}
+		],
+		"variables": {
+			"i": {
+				"type": "Boolean",
+				"defaultValue": false
+			},
+			"totalcount": {
+				"type": "Integer",
+				"defaultValue": 0
+			},
+			"temp": {
+				"type": "Integer",
+				"defaultValue": 0
+			},
+			"count": {
+				"type": "Integer",
+				"defaultValue": 0
+			},
+			"final count": {
+				"type": "Integer",
+				"defaultValue": 0
+			},
+			"lastcountvalue": {
+				"type": "Integer"
+			}
+		},
+		"folder": {
+			"name": "count records in file"
+		},
+		"annotations": [],
+		"lastPublishTime": "2024-03-03T01:52:35Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

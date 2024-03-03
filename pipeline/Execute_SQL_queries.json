@@ -1,6 +1,7 @@
 {
 	"name": "Execute_SQL_queries",
 	"properties": {
+		"description": "storage--> IAM --> Data Factory Contributor --> Create and manage data factories,",
 		"activities": [
 			{
 				"name": "Get Metadata1",
@@ -16,7 +17,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"dataset": {
-						"referenceName": "Binary1",
+						"referenceName": "meta_Execute_SQL_queries",
 						"type": "DatasetReference"
 					},
 					"fieldList": [
@@ -135,8 +136,11 @@
 				"type": "String"
 			}
 		},
+		"folder": {
+			"name": "Execute_SQL_queries"
+		},
 		"annotations": [],
-		"lastPublishTime": "2024-02-28T08:30:26Z"
+		"lastPublishTime": "2024-03-03T01:45:24Z"
 	},
 	"type": "Microsoft.DataFactory/factories/pipelines"
 }

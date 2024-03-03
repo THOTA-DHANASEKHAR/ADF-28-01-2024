@@ -27,7 +27,7 @@
 							"userProperties": [],
 							"typeProperties": {
 								"dataset": {
-									"referenceName": "source_check_until_fileis_uploaded",
+									"referenceName": "source_check_until_file_is_uploaded",
 									"type": "DatasetReference"
 								},
 								"fieldList": [
@@ -100,8 +100,11 @@
 				"defaultValue": false
 			}
 		},
+		"folder": {
+			"name": "Check Until File is uploaded"
+		},
 		"annotations": [],
-		"lastPublishTime": "2024-02-27T11:59:43Z"
+		"lastPublishTime": "2024-03-03T01:38:42Z"
 	},
 	"type": "Microsoft.DataFactory/factories/pipelines"
 }
