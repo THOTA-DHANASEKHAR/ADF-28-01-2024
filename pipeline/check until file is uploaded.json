@@ -1,5 +1,5 @@
 {
-	"name": "check until fileis uploaded",
+	"name": "check until file is uploaded",
 	"properties": {
 		"activities": [
 			{

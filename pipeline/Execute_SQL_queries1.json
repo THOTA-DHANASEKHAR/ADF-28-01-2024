@@ -1,0 +1,145 @@
+{
+	"name": "Execute_SQL_queries1",
+	"properties": {
+		"description": "storage--> IAM --> Data Factory Contributor --> Create and manage data factories,",
+		"activities": [
+			{
+				"name": "Get Metadata1",
+				"type": "GetMetadata",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"dataset": {
+						"referenceName": "meta_Execute_SQL_queries1",
+						"type": "DatasetReference"
+					},
+					"fieldList": [
+						"childItems"
+					],
+					"storeSettings": {
+						"type": "AzureBlobFSReadSettings",
+						"recursive": true,
+						"enablePartitionDiscovery": false
+					},
+					"formatSettings": {
+						"type": "BinaryReadSettings"
+					}
+				}
+			},
+			{
+				"name": "Filter1",
+				"type": "Filter",
+				"dependsOn": [
+					{
+						"activity": "Get Metadata1",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"items": {
+						"value": "@activity('Get Metadata1').output.childItems",
+						"type": "Expression"
+					},
+					"condition": {
+						"value": "@endswith(item().name,'.sql')",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "ForEach1",
+				"type": "ForEach",
+				"dependsOn": [
+					{
+						"activity": "Filter1",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"items": {
+						"value": "@activity('Filter1').output.value",
+						"type": "Expression"
+					},
+					"activities": [
+						{
+							"name": "Set variable1",
+							"type": "SetVariable",
+							"dependsOn": [],
+							"policy": {
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "file",
+								"value": {
+									"value": "@concat('https://durgesamstorage.dfs.core.windows.net/','source/SQL/',item().name)",
+									"type": "Expression"
+								}
+							}
+						},
+						{
+							"name": "Web1",
+							"description": "x-ms-version 2017-11-09  2020-04-08 \nand\nx-ms-blob-type Blockblob",
+							"type": "WebActivity",
+							"dependsOn": [
+								{
+									"activity": "Set variable1",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"method": "GET",
+								"headers": {
+									"x-ms-version": "2020-04-08",
+									"x-ms-blob-type": "Blockblob"
+								},
+								"url": {
+									"value": "@variables('file')",
+									"type": "Expression"
+								},
+								"authentication": {
+									"type": "MSI",
+									"resource": "https://storage.azure.com/"
+								}
+							}
+						}
+					]
+				}
+			}
+		],
+		"variables": {
+			"file": {
+				"type": "String"
+			}
+		},
+		"folder": {
+			"name": "Execute_SQL_queries"
+		},
+		"annotations": [],
+		"lastPublishTime": "2024-02-28T08:30:26Z"
+	}
+}

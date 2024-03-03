@@ -21,7 +21,7 @@
 						"partitionOption": "None"
 					},
 					"dataset": {
-						"referenceName": "Cnt_tbl_Object_Level_Recovery",
+						"referenceName": "Cnt_tbl_50_tables_with_30_full_load_and_20_incremental_load",
 						"type": "DatasetReference"
 					}
 				}
@@ -96,6 +96,9 @@
 				}
 			}
 		],
+		"folder": {
+			"name": "50 tables with 30 full load and 20 incremental load"
+		},
 		"annotations": []
 	}
 }

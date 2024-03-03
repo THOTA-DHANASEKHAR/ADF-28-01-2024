@@ -1,12 +1,12 @@
 {
-	"name": "Cnt_tbl_Object_Level_Recovery",
+	"name": "Cnt_tbl_50_tables_with_30_full_load_and_20_incremental_load",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "LSAsqlDB",
 			"type": "LinkedServiceReference"
 		},
 		"folder": {
-			"name": "Object_Level_Recovery"
+			"name": "50_tables_with_30_full_load_and_20_incremental_load"
 		},
 		"annotations": [],
 		"type": "AzureSqlTable",

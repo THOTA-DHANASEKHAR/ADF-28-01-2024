@@ -387,7 +387,7 @@
 						"partitionOption": "None"
 					},
 					"dataset": {
-						"referenceName": "Cnt_tbl_Object_Level_Recovery",
+						"referenceName": "Cnt_tbl_50_tables_with_30_full_load_and_20_incremental_load",
 						"type": "DatasetReference"
 					},
 					"firstRowOnly": false
@@ -532,7 +532,7 @@
 						"partitionOption": "None"
 					},
 					"dataset": {
-						"referenceName": "Cnt_tbl_Object_Level_Recovery",
+						"referenceName": "Cnt_tbl_50_tables_with_30_full_load_and_20_incremental_load",
 						"type": "DatasetReference"
 					}
 				}
