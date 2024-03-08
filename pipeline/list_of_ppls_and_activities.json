@@ -1,0 +1,46 @@
+{
+	"name": "list_of_ppls_and_activities",
+	"properties": {
+		"activities": [
+			{
+				"name": "Web1",
+				"type": "WebActivity",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"method": "GET",
+					"url": "https://management.azure.com/subscriptions/4b7c33b7-6409-4b66-8d2b-c16d87ae2c4e/resourceGroups/TDS_GROUP/providers/Microsoft.DataFactory/factories/THOTAGROUPS/pipelines?api-version=2018-06-01",
+					"body": {
+						"lastUpdatedAfter": "2024-03-1T23:59:00.4384332Z",
+						"lastUpdatedBefore": "2024-03-5T00:36:44.3345758Z",
+						"filters": [
+							{
+								"operand": "check until fileis uploaded",
+								"operator": "Equals",
+								"values": [
+									"SortArrayElements"
+								]
+							}
+						]
+					},
+					"authentication": {
+						"type": "MSI",
+						"resource": "https://management.azure.com"
+					}
+				}
+			}
+		],
+		"folder": {
+			"name": "list_of_ppls_and_activities"
+		},
+		"annotations": [],
+		"lastPublishTime": "2024-03-08T10:07:53Z"
+	}
+}

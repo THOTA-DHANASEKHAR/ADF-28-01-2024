@@ -1,0 +1,138 @@
+{
+	"name": "dynamic_file path_from_past_date1",
+	"properties": {
+		"activities": [
+			{
+				"name": "Until1",
+				"type": "Until",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"expression": {
+						"value": "@variables('flag')",
+						"type": "Expression"
+					},
+					"activities": [
+						{
+							"name": "yearmonthpath",
+							"type": "AppendVariable",
+							"dependsOn": [],
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "yearmonths",
+								"value": {
+									"value": "@concat(formatdatetime(variables('date'),'yyyy'), '/',\n                formatdatetime(variables('date'),'MM'))",
+									"type": "Expression"
+								}
+							}
+						},
+						{
+							"name": "If Condition1",
+							"type": "IfCondition",
+							"dependsOn": [
+								{
+									"activity": "yearmonthpath",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"userProperties": [],
+							"typeProperties": {
+								"expression": {
+									"value": "@and(\n    equals(formatdatetime(variables('date'),'yyyy'),formatdatetime(utcNow(),'yyyy')),equals(formatdatetime(variables('date'),'MMM'),formatdatetime(utcNow(),'MMM') )\n     )",
+									"type": "Expression"
+								},
+								"ifFalseActivities": [
+									{
+										"name": "set next date",
+										"type": "SetVariable",
+										"dependsOn": [
+											{
+												"activity": "temp",
+												"dependencyConditions": [
+													"Succeeded"
+												]
+											}
+										],
+										"policy": {
+											"secureOutput": false,
+											"secureInput": false
+										},
+										"userProperties": [],
+										"typeProperties": {
+											"variableName": "date",
+											"value": {
+												"value": "@variables('temp')",
+												"type": "Expression"
+											}
+										}
+									},
+									{
+										"name": "temp",
+										"type": "SetVariable",
+										"dependsOn": [],
+										"policy": {
+											"secureOutput": false,
+											"secureInput": false
+										},
+										"userProperties": [],
+										"typeProperties": {
+											"variableName": "temp",
+											"value": {
+												"value": "@startOfMonth(adddays(variables('date'), 31))",
+												"type": "Expression"
+											}
+										}
+									}
+								],
+								"ifTrueActivities": [
+									{
+										"name": "flag_true",
+										"description": "true",
+										"type": "SetVariable",
+										"dependsOn": [],
+										"policy": {
+											"secureOutput": false,
+											"secureInput": false
+										},
+										"userProperties": [],
+										"typeProperties": {
+											"variableName": "flag",
+											"value": true
+										}
+									}
+								]
+							}
+						}
+					],
+					"timeout": "0.12:00:00"
+				}
+			}
+		],
+		"variables": {
+			"date": {
+				"type": "String",
+				"defaultValue": "2023-01-08T04:19:20.0109973Z"
+			},
+			"yearmonths": {
+				"type": "Array"
+			},
+			"temp": {
+				"type": "String"
+			},
+			"flag": {
+				"type": "Boolean",
+				"defaultValue": false
+			},
+			"checkpath": {
+				"type": "Array"
+			}
+		},
+		"folder": {
+			"name": "dynamic_file path_from_past_date"
+		},
+		"annotations": [],
+		"lastPublishTime": "2024-03-08T10:07:53Z"
+	}
+}
