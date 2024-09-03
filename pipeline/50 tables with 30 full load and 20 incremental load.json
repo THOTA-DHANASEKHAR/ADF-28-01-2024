@@ -17,6 +17,7 @@
 				"typeProperties": {
 					"source": {
 						"type": "AzureSqlSource",
+						"sqlReaderQuery": "select  * from control_tbl where status\n= 'not copied'\n",
 						"queryTimeout": "02:00:00",
 						"partitionOption": "None"
 					},
@@ -40,7 +41,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"items": {
-						"value": "select  * from control_tyal where status\n= 'not copied'\n",
+						"value": "@activity('Lookup1').output.tables",
 						"type": "Expression"
 					},
 					"activities": [
@@ -70,6 +71,39 @@
 										"typeProperties": {
 											"enableStaging": false
 										}
+									},
+									{
+										"name": "Script1_copy2",
+										"type": "Script",
+										"dependsOn": [
+											{
+												"activity": "delta",
+												"dependencyConditions": [
+													"Succeeded"
+												]
+											}
+										],
+										"policy": {
+											"timeout": "0.12:00:00",
+											"retry": 0,
+											"retryIntervalInSeconds": 30,
+											"secureOutput": false,
+											"secureInput": false
+										},
+										"userProperties": [],
+										"linkedServiceName": {
+											"referenceName": "LSAsqlDB",
+											"type": "LinkedServiceReference"
+										},
+										"typeProperties": {
+											"scripts": [
+												{
+													"type": "Query",
+													"text": "update table  set  status='not copy'"
+												}
+											],
+											"scriptBlockExecutionTimeout": "02:00:00"
+										}
 									}
 								],
 								"ifTrueActivities": [
@@ -88,11 +122,77 @@
 										"typeProperties": {
 											"enableStaging": false
 										}
+									},
+									{
+										"name": "Script1_copy1",
+										"type": "Script",
+										"dependsOn": [
+											{
+												"activity": "fullrefresh",
+												"dependencyConditions": [
+													"Succeeded"
+												]
+											}
+										],
+										"policy": {
+											"timeout": "0.12:00:00",
+											"retry": 0,
+											"retryIntervalInSeconds": 30,
+											"secureOutput": false,
+											"secureInput": false
+										},
+										"userProperties": [],
+										"linkedServiceName": {
+											"referenceName": "LSAsqlDB",
+											"type": "LinkedServiceReference"
+										},
+										"typeProperties": {
+											"scripts": [
+												{
+													"type": "Query",
+													"text": "update table  set  status='not copy'"
+												}
+											],
+											"scriptBlockExecutionTimeout": "02:00:00"
+										}
 									}
 								]
 							}
 						}
 					]
+				}
+			},
+			{
+				"name": "Script1",
+				"type": "Script",
+				"dependsOn": [
+					{
+						"activity": "ForEach1",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"linkedServiceName": {
+					"referenceName": "LSAsqlDB",
+					"type": "LinkedServiceReference"
+				},
+				"typeProperties": {
+					"scripts": [
+						{
+							"type": "Query",
+							"text": "update table  set  status='not copy'"
+						}
+					],
+					"scriptBlockExecutionTimeout": "02:00:00"
 				}
 			}
 		],
