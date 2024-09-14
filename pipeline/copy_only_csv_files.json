@@ -1,5 +1,5 @@
 {
-	"name": "copy_only_csv",
+	"name": "copy_only_csv_files",
 	"properties": {
 		"activities": [
 			{
