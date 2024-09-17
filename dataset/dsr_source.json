@@ -1,0 +1,23 @@
+{
+	"name": "dsr_source",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureDataLakeStorage4_dsr",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileName": "cur.csv",
+				"fileSystem": "input"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": []
+	}
+}
