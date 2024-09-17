@@ -17,9 +17,9 @@
 		],
 		"type": "BlobEventsTrigger",
 		"typeProperties": {
-			"blobPathBeginsWith": "/source/blobs/",
+			"blobPathBeginsWith": "/input/blobs/",
 			"ignoreEmptyBlobs": true,
-			"scope": "/subscriptions/01d7060d-7683-4d0b-9047-e1989e1c5f15/resourceGroups/tds/providers/Microsoft.Storage/storageAccounts/gunasai",
+			"scope": "/subscriptions/9e20b998-f52d-48b6-996e-bb2c187dbc1d/resourceGroups/SAT/providers/Microsoft.Storage/storageAccounts/adlssat01",
 			"events": [
 				"Microsoft.Storage.BlobCreated"
 			]
