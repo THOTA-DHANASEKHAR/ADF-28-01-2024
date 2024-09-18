@@ -1,0 +1,25 @@
+{
+	"name": "dsr_eventtrigger",
+	"properties": {
+		"annotations": [],
+		"runtimeState": "Started",
+		"pipelines": [
+			{
+				"pipelineReference": {
+					"referenceName": "dsr_event_pipeline",
+					"type": "PipelineReference"
+				}
+			}
+		],
+		"type": "BlobEventsTrigger",
+		"typeProperties": {
+			"blobPathBeginsWith": "/input/blobs/cur",
+			"ignoreEmptyBlobs": true,
+			"scope": "/subscriptions/9e20b998-f52d-48b6-996e-bb2c187dbc1d/resourceGroups/SAT/providers/Microsoft.Storage/storageAccounts/adlssat01",
+			"events": [
+				"Microsoft.Storage.BlobCreated",
+				"Microsoft.Storage.BlobDeleted"
+			]
+		}
+	}
+}
