@@ -8,6 +8,9 @@
 				"pipelineReference": {
 					"referenceName": "dsr_event_pipeline",
 					"type": "PipelineReference"
+				},
+				"parameters": {
+					"fname": "@triggerBody().fileName"
 				}
 			}
 		],
