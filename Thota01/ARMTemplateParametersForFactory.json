@@ -1,0 +1,108 @@
+{
+	"$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"value": "Thota01"
+		},
+		"AzureBlobStorage1_connectionString": {
+			"value": ""
+		},
+		"AzureDataLakeStorage1_accountKey": {
+			"value": ""
+		},
+		"AzureDataLakeStorage2_accountKey": {
+			"value": ""
+		},
+		"AzureDataLakeStorage3_accountKey": {
+			"value": ""
+		},
+		"AzureDataLakeStorage4_dsr_accountKey": {
+			"value": ""
+		},
+		"AzureSqlDatabase_password": {
+			"value": ""
+		},
+		"AzureSqlDatabase1_connectionString": {
+			"value": ""
+		},
+		"BlobStorage_connectionString": {
+			"value": ""
+		},
+		"LSAsqlDB_connectionString": {
+			"value": ""
+		},
+		"LS_AzureDataLakeStorage3_accountKey": {
+			"value": ""
+		},
+		"Oracle_connectionString": {
+			"value": ""
+		},
+		"Oracle1_connectionString": {
+			"value": ""
+		},
+		"SQL SERVER_connectionString": {
+			"value": ""
+		},
+		"SqlServer1_connectionString": {
+			"value": ""
+		},
+		"AzureDataLakeStorage1_properties_typeProperties_url": {
+			"value": "https://adlssat01.dfs.core.windows.net/"
+		},
+		"AzureDataLakeStorage2_properties_typeProperties_url": {
+			"value": "https://durgesamstorage.dfs.core.windows.net/"
+		},
+		"AzureDataLakeStorage3_properties_typeProperties_url": {
+			"value": "https://adlssat01.dfs.core.windows.net/"
+		},
+		"AzureDataLakeStorage4_dsr_properties_typeProperties_url": {
+			"value": "https://adlssat01.dfs.core.windows.net/"
+		},
+		"AzureKeyVault_properties_typeProperties_baseUrl": {
+			"value": "https://on-primes-oracle.vault.azure.net/"
+		},
+		"AzureSqlDatabase_properties_typeProperties_server": {
+			"value": "keerthi01.database.windows.net"
+		},
+		"AzureSqlDatabase_properties_typeProperties_database": {
+			"value": "Keerthi"
+		},
+		"AzureSqlDatabase_properties_typeProperties_userName": {
+			"value": "tds"
+		},
+		"LS_AzureDataLakeStorage3_properties_typeProperties_url": {
+			"value": "https://tdsgroups.dfs.core.windows.net/"
+		},
+		"RestService_properties_typeProperties_url": {
+			"value": "https://jsonplaceholder.typicode.com/users"
+		},
+		"RestService1_properties_typeProperties_url": {
+			"value": "https://reqres.in/api/users"
+		},
+		"Schedule_Trigger_properties_Schedule_Triggers_parameters_scheduledTime": {
+			"value": "@trigger().scheduledTime"
+		},
+		"Storage_event_trigger_properties_Storage_Event_Triggers_parameters_fileName": {
+			"value": "@triggerBody().fileName"
+		},
+		"Storage_event_trigger_properties_Storage_Event_Triggers_parameters_filepath": {
+			"value": "@triggerBody().folderPath"
+		},
+		"Storage_event_trigger_properties_typeProperties_scope": {
+			"value": "/subscriptions/9e20b998-f52d-48b6-996e-bb2c187dbc1d/resourceGroups/SAT/providers/Microsoft.Storage/storageAccounts/adlssat01"
+		},
+		"dsr_eventtrigger_properties_dsr_event_pipeline_parameters_fname": {
+			"value": "@triggerBody().fileName"
+		},
+		"dsr_eventtrigger_properties_typeProperties_scope": {
+			"value": "/subscriptions/9e20b998-f52d-48b6-996e-bb2c187dbc1d/resourceGroups/SAT/providers/Microsoft.Storage/storageAccounts/adlssat01"
+		},
+		"trigger1_properties_typeProperties_scope": {
+			"value": "/subscriptions/4b7c33b7-6409-4b66-8d2b-c16d87ae2c4e/resourceGroups/TDS_GROUP/providers/Microsoft.Storage/storageAccounts/tdsgroups"
+		},
+		"integrationRuntime1_properties_typeProperties_linkedInfo_resourceId": {
+			"value": "/subscriptions/4b7c33b7-6409-4b66-8d2b-c16d87ae2c4e/resourcegroups/TDS_GROUP/providers/Microsoft.DataFactory/factories/THOTAGROUPS/integrationruntimes/SIR"
+		}
+	}
+}
