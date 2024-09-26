@@ -1,0 +1,9 @@
+{
+	"name": "anil01",
+	"location": "southindia",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "08984466-b304-4a18-bd5b-5994f96c563e",
+		"tenantId": "724a5dbe-79d3-4f27-90d5-157ce61dd79d"
+	}
+}
