@@ -1,0 +1,9 @@
+{
+	"name": "DMK",
+	"location": "eastus",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "c981add8-5d52-4828-b4da-556e256b33c4",
+		"tenantId": "aac8721c-0556-428f-88bd-a18378ae1fd0"
+	}
+}
